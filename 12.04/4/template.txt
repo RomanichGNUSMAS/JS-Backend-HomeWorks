@@ -1,0 +1,1 @@
+hello {{name}} my name is {{authorName}}. today we are studying backend modules with {{mode}} 

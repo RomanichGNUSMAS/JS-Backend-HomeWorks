@@ -4,24 +4,26 @@ class CustomEventEmitter {
         this.#emitters = {};
     }
 
-    on(emitterName,listenerFunction) {
-        if(!emitterName.trim() || typeof listenerFunction !== 'function') throw new TypeError('invalid arguments');
-        this.#emitters[emitterName] = listenerFunction;
+    on(eventName,listenerFunction) {
+        if(!eventName.trim() || typeof listenerFunction !== 'function') throw new TypeError('invalid arguments');
+        if (!this.#emitters[eventName]) {
+            this.#emitters[eventName] = [];
+        }
+        this.#emitters[eventName].push(listenerFunction);
     }
 
     emit(eventName,...args) {
-        if(!this.#emitters[eventName]) throw new Error('not found')
-        return this.#emitters[eventName](...args);
+        if(!this.#emitters[eventName]) return false
+        return this.#emitters[eventName].forEach(func => func(...args));
     }
 
     off(eventName,listener) {
-        for(const event in this.#emitters) {
-            if(event == eventName && listener === this.#emitters[event]) {
-                delete this.#emitters[event];
-                return true;
-            }
-        }
-        return false;
+        if (!this.#emitters[eventName]) return false;
+
+        const size = this.#emitters[eventName].length;
+        this.#emitters[eventName] = this.#emitters[eventName].filter(l => l !== listener);
+        
+        return this.#emitters[eventName].length !== size;
     }
 }
 

@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "username": "roman",
+    "email": "romanepremyan@gmail.com",
+    "password": "roman350",
+    "role": "admin",
+    "id": 1778686391467,
+    "user_id": 1778686391467
+  }
+]

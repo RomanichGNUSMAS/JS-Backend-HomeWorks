@@ -21,9 +21,6 @@ app.use((req, res, next) => {
   next();
 })
 
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-})
 
 app.get('/api/login', (req, res) => {
   const { name, password } = req;
@@ -45,7 +42,11 @@ app.get('/api/public', (req,res) => {
 })
 
 app.get('/api/info', (req,res) => {
-  
+  const { name,password } = req;
+  const found = users.find(t => t.name === name);
+  if(!found) return res.status(404).send("user not found");
+  if(found.password != password) return res.status(401).send('invalid password');
+  res.status(200).json("some info for user:",name);
 })
 
 app.listen(3000)

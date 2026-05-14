@@ -1,0 +1,17 @@
+[
+    {
+        "username": "Roman",
+        "apikey" : "sjfsbsado233",
+        "permissions" : ["read","write"]
+    },
+    {
+        "username" : "James",
+        "apikey" : "asdahdhb531",
+        "permissions" : ["read"]
+    },
+    {
+        "username" : "Bob",
+        "apikey" : "frascca9222",
+        "permissions" : ["write"]
+    }
+]

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>login</h1>
+    <div>
+        <input type="text" placeholder="email" id="mail">
+        <input type="text" placeholder="password" id="password">
+        <button onclick="handleLogin()">login</button>
+    </div>
+    <script src="handler.js"></script>
+    <script>
+        foo();
+        const handleLogin = async () => {
+            const email = document.getElementById('mail').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('/api/login', {
+                method:"POST",
+                headers: {'Content-Type' : 'application/json'},
+                body: JSON.stringify({
+                    email,password
+                })
+            })
+
+            if(response.ok) {
+                const key = await response.text();
+                sessionStorage.setItem('token',key);
+                window.location.href = '/dashboard.html';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,13 +1,17 @@
 const express = require('express');
 const fs = require('node:fs');
+const path = require('node:path');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
 require('dotenv').config({ quiet: true });
 
 const secret = process.env.API_SECRET;
 const app = express();
 
 app.use(express.json())
+app.use(cors())
+app.use(express.static(path.join(__dirname,'public')));
 
 function validateJWTKEY(req,res,next) {
     const jwtKey = req.headers.authorization;

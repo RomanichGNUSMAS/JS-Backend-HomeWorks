@@ -16,7 +16,7 @@ function validateAPIKey(req, res, next) {
         return res.status(401).send('invalid api key');
     }
     next();
-}
+} 
 
 function validateUserPermissions(permission) {
     return function (req, res, next) {

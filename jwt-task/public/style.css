@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root {
+  --bg-deep:     #0b0c10;
+  --bg-card:     rgba(255,255,255,0.04);
+  --bg-input:    rgba(255,255,255,0.05);
+  --border:      rgba(255,255,255,0.08);
+  --border-glow: rgba(196,155,89,0.55);
+  --gold:        #c49b59;
+  --gold-light:  #e2bf89;
+  --cream:       #f0ebe0;
+  --muted:       rgba(240,235,224,0.45);
+  --danger:      #e07070;
+  --radius-sm:   6px;
+  --radius-md:   14px;
+  --radius-lg:   22px;
+  --ease:        cubic-bezier(.22,.68,0,1.2);
+}
+
+/* ══════════════════════════════════════════
+   RESET
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+/* ══════════════════════════════════════════
+   ANIMATED BACKGROUND
+══════════════════════════════════════════ */
+body {
+  min-height: 100vh;
+  background-color: var(--bg-deep);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(196,155,89,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 90%, rgba(89,112,196,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(196,155,89,0.04) 0%, transparent 70%);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  color: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+/* floating orbs */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  animation: drift 18s ease-in-out infinite alternate;
+  z-index: 0;
+}
+body::before {
+  width: 500px; height: 500px;
+  top: -120px; left: -100px;
+  background: radial-gradient(circle, rgba(196,155,89,0.15), transparent 70%);
+}
+body::after {
+  width: 400px; height: 400px;
+  bottom: -100px; right: -80px;
+  background: radial-gradient(circle, rgba(89,112,196,0.12), transparent 70%);
+  animation-duration: 22s;
+  animation-direction: alternate-reverse;
+}
+@keyframes drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, 30px) scale(1.1); }
+}
+
+/* ══════════════════════════════════════════
+   CARD WRAPPER (the <div> on login/register)
+══════════════════════════════════════════ */
+body > div {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-card);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.75rem 2.5rem 2.5rem;
+  box-shadow:
+    0 0 0 1px rgba(196,155,89,0.06),
+    0 40px 80px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.07);
+  animation: slideUp 0.6s var(--ease) both;
+}
+
+/* shine line at top of card */
+body > div::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 15%; right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  border-radius: 1px;
+  opacity: 0.6;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ══════════════════════════════════════════
+   TYPOGRAPHY — h1
+══════════════════════════════════════════ */
+h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 4vw, 2.4rem);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--cream);
+  margin-bottom: 2.25rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 0.7s var(--ease) 0.1s both;
+}
+
+/* golden underscore accent */
+h1::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 2px;
+  margin-top: 10px;
+}
+
+/* dashboard h1 lives outside the card div */
+body > h1 {
+  position: relative; z-index: 1;
+  animation: fadeIn 0.6s var(--ease) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════
+   INPUTS
+══════════════════════════════════════════ */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  display: block;
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.1rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--cream);
+  outline: none;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  -webkit-appearance: none;
+  margin-bottom: 0.85rem;
+}
+
+input::placeholder {
+  color: var(--muted);
+  font-weight: 300;
+}
+
+input:hover {
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.07);
+}
+
+input:focus {
+  border-color: var(--border-glow);
+  background: rgba(196,155,89,0.06);
+  box-shadow: 0 0 0 3px rgba(196,155,89,0.12), inset 0 1px 0 rgba(196,155,89,0.05);
+}
+
+/* ══════════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════════ */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  margin-top: 0.6rem;
+
+  background: linear-gradient(135deg, #c49b59 0%, #e2bf89 50%, #c49b59 100%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+
+  color: #1a1205;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-position 0.4s ease, transform 0.18s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 20px rgba(196,155,89,0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+  -webkit-appearance: none;
+}
+
+button:hover {
+  background-position: 0% 0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(196,155,89,0.45), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+button:active {
+  transform: translateY(0px) scale(0.99);
+  box-shadow: 0 2px 10px rgba(196,155,89,0.3);
+}
+
+/* shimmer on button */
+button::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 80%; height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  transition: left 0.55s ease;
+}
+button:hover::after {
+  left: 160%;
+}
+
+/* ══════════════════════════════════════════
+   DASHBOARD — logout button override
+══════════════════════════════════════════ */
+body > button[type="submit"] {
+  width: auto;
+  padding: 0.6rem 1.4rem;
+  margin-top: 2rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, border-color 0.2s, transform 0.18s, background 0.2s;
+}
+
+body > button[type="submit"]::after { display: none; }
+
+body > button[type="submit"]:hover {
+  color: var(--danger);
+  border-color: rgba(224,112,112,0.4);
+  background: rgba(224,112,112,0.06);
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+
+/* ══════════════════════════════════════════
+   DASHBOARD page layout
+══════════════════════════════════════════ */
+body:has(> h1):has(> button[type="submit"]) {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4rem 5vw;
+}
+
+/* ══════════════════════════════════════════
+   UTILITY
+══════════════════════════════════════════ */
+::selection {
+  background: rgba(196,155,89,0.35);
+  color: var(--cream);
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(196,155,89,0.3); border-radius: 2px; }

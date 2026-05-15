@@ -47,7 +47,7 @@ function validateLogin(req, res, next) {
     if (!compare) res.status(401).send('wrong password');
     next()
 }
-
+ 
 app.post('/api/register', validateRegister, async (req, res) => {
     const { email, password } = req.body;
     const crypted = await bcrypt.hash(password, 10);

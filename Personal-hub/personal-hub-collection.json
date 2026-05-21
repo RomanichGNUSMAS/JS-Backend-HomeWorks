@@ -1,0 +1,415 @@
+{
+	"info": {
+		"_postman_id": "personal-hub-api-id",
+		"name": "Personal Hub API",
+		"description": "Коллекция запросов для тестирования Personal Hub API (Роман, Picsart Academy)",
+		"schema": "[https://schema.getpostman.com/json/collection/v2.1.0/collection.json](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register Anna",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"anna\",\n    \"password\": \"qwerty12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Register Boris",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"boris\",\n    \"password\": \"secure_pass_99\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login Anna",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.token) {",
+									"        pm.environment.set(\"token\", response.token);",
+									"        console.log(\"✅ Токен Анны сохранен!\");",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"anna\",\n    \"password\": \"qwerty12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login Boris",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.token) {",
+									"        pm.environment.set(\"token\", response.token);",
+									"        console.log(\"✅ Токен Бориса сохранен!\");",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"boris\",\n    \"password\": \"secure_pass_99\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Get Me (Profile)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "me"]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "logout"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "Create Note",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Купить молоко\",\n    \"body\": \"2 литра, безлактозное\",\n    \"tags\": [\"shopping\", \"urgent\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/notes",
+							"host": ["{{baseUrl}}"],
+							"path": ["notes"]
+						}
+					}
+				},
+				{
+					"name": "Get My Notes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/notes?tag=urgent",
+							"host": ["{{baseUrl}}"],
+							"path": ["notes"],
+							"query": [
+								{
+									"key": "tag",
+									"value": "urgent"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Single Note",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/notes/n_измени_меня",
+							"host": ["{{baseUrl}}"],
+							"path": ["notes", "n_измени_меня"]
+						}
+					}
+				},
+				{
+					"name": "Update Note",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Купить безлактозное молоко и кефир\",\n    \"tags\": [\"shopping\", \"home\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/notes/n_измени_меня",
+							"host": ["{{baseUrl}}"],
+							"path": ["notes", "n_измени_меня"]
+						}
+					}
+				},
+				{
+					"name": "Delete Note",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/notes/n_измени_меня",
+							"host": ["{{baseUrl}}"],
+							"path": ["notes", "n_измени_меня"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Add Book",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Clean Code\",\n    \"author\": \"Robert C. Martin\",\n    \"status\": \"reading\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": ["{{baseUrl}}"],
+							"path": ["books"]
+						}
+					}
+				},
+				{
+					"name": "Get Books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books?status=reading",
+							"host": ["{{baseUrl}}"],
+							"path": ["books"],
+							"query": [
+								{
+									"key": "status",
+									"value": "reading"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Book (Finish & Rate)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"finished\",\n    \"rating\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/b_измени_меня",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "b_измени_меня"]
+						}
+					}
+				},
+				{
+					"name": "Delete Book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/b_измени_меня",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "b_измени_меня"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Habits",
+			"item": [
+				{
+					"name": "Create Habit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Пить воду\",\n    \"frequency\": \"daily\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/habits",
+							"host": ["{{baseUrl}}"],
+							"path": ["habits"]
+						}
+					}
+				},
+				{
+					"name": "Get Habits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/habits",
+							"host": ["{{baseUrl}}"],
+							"path": ["habits"]
+						}
+					}
+				},
+				{
+					"name": "Check-In Habit (Increment)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/habits/h_измени_меня/check-in",
+							"host": ["{{baseUrl}}"],
+							"path": ["habits", "h_измени_меня", "check-in"]
+						}
+					}
+				},
+				{
+					"name": "Delete Habit",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/habits/h_измени_меня",
+							"host": ["{{baseUrl}}"],
+							"path": ["habits", "h_измени_меня"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,55 @@
+-- Task 1.1
+CREATE DATABASE bookstore;
+
+-- Task 1.2
+\l
+
+-- Task 1.3
+\c bookstore
+
+-- Task 1.4
+\conninfo
+
+-- Task 2.1
+CREATE USER librarian WITH PASSWORD 'lib123';
+
+-- Task 2.2
+CREATE USER visitor WITH PASSWORD 'vis123';
+
+-- Task 2.3
+\du
+
+-- Task 2.4
+CREATE ROLE readers;
+-- տարբերությունը այն է, որ CREATE ROLE-ի դեպքում պարամետրեր մենք manual պետք է փոխանցենք իսկ CREATE USER-ի դեպքում պարամետրեր փոխանցվում է որից մեկը WITH LOGIN
+
+-- Task 2.5
+GRANT CONNECT ON DATABASE bookstore TO visitor;
+
+-- Task 2.6
+ALTER USER librarian WITH PASSWORD 'newpass456'
+
+-- Task 2.7
+ALTER USER visitor WITH NOLOGIN;
+
+ALTER USER visitor WITH LOGIN;
+
+
+-- task 5.5
+--վտանգավոր է, որովհետեվ կարող է նաև փոփոխման անհրաժեշտություն չունեցող տվյալները կորցենք կամ փոխենք 
+
+-- task 6.1
+ALTER TABLE books ADD COLUMN pages INTEGER;
+
+-- task 6.2
+ALTER TABLE books ADD COLUMN is_active BOOLEAN DEFAULT TRUE;
+
+-- task 6.3
+ALTER TABLE customers RENAME COLUMN full_name TO name;
+ALTER TABLE books
+ALTER COLUMN name TYPE TEXT NOT NULL;
+
+-- task 6.4
+ALTER TABLE books
+ALTER COLUMN price TYPE smallint
+

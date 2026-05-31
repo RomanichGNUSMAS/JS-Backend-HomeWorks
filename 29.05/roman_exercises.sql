@@ -84,10 +84,10 @@ REVOKE INSERT ON books FROM librarian;
 -- Task 8.1
 SELECT books.title,authors.name
 FROM books
-INNER JOIN authors ON authors.id = book.author_id;
+INNER JOIN authors ON authors.id = books.author_id;
 
 -- Task 8.2
-SELECT * FROM books
+SELECT books.title, authors.name FROM books
 INNER JOIN authors ON books.author_id = authors.id
  WHERE authors.birth_year > 1900;
 
@@ -108,3 +108,20 @@ HAVING COUNT(books.id) > 1;
 \du
 
 -- Task 9.2
+--ОШИБКА:  роль "visitor" нельзя удалить, так как есть зависящие от неё объекты
+--DETAIL:  права доступа к объекту база данных bookstore
+--права доступа к объекту таблица books
+
+-- Task 9.3
+REASSIGN OWNED FROM visitor TO postgres;
+DROP OWNED FROM visitor;
+DROP USER visitor;
+
+-- Task 9.4
+DROP TABLE books;
+DROP TABLE authors;
+-- այո քանի որ books-ը կախվածություն ունի authors-ից
+
+-- Task 9.5
+psql -U postgres -d anotherDatabase
+DROP DATABASE bookstore;

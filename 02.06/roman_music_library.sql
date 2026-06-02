@@ -373,3 +373,57 @@ INNER JOIN songs ON songs.id = listening_history.song_id
 GROUP BY(users.name);
 
 -- Task 6.8
+SELECT users.name,songs.genre,COUNT(*) FROM users
+INNER JOIN listening_history ON listening_history.user_id = users.id
+INNER JOIN songs ON listening_history.song_id = songs.id
+WHERE users.name ILIKE '%alice%'
+GROUP BY(users.name,songs.genre)
+ORDER BY COUNT(*) DESC;
+
+-- Task 6.9
+SELECT songs.title,COUNT(songs.title) as play_count FROM songs
+INNER JOIN listening_history ON listening_history.song_id = songs.id
+GROUP BY(songs.id)
+ORDER BY play_count DESC LIMIT 5;
+
+-- Task 6.10
+SELECT users.name,SUM(songs.length_seconds) / 60 as totalMinutes FROM users
+INNER JOIN listening_history ON 
+users.id = listening_history.user_id
+INNER JOIN songs ON listening_history.song_id = songs.id
+GROUP BY(users.id)
+ORDER BY totalMinutes DESC LIMIT 3;
+
+-- Task 7.1
+-- deleting an artists i got an error
+--ОШИБКА:  UPDATE или DELETE в таблице "artists" нарушает ограничение внешнего ключа "albums_artist_id_fkey" таблицы "albums"
+--DETAIL:  На ключ (id)=(1) всё ещё есть ссылки в таблице "albums".
+
+-- Task 7.2
+ALTER TABLE albums DROP COLUMN album_id;
+TRUNCATE albums CASCADE;
+ALTER TABLE albums -- without this will give error because with adding column default sets a null
+ADD COLUMN artist_id INTEGER NOT NULL REFERENCES artists(id) ON DELETE CASCADE;
+
+-- it successfully deletes because we had clear all tables with cascade in task 7.2
+-- else we would have an error that update or delete violates foreign key constraint
+
+
+-- Task 7.3
+ALTER TABLE albums DROP CONSTRAINT albums_artist_id_fkey;
+ALTER TABLE albums 
+ADD CONSTRAINT albums_artist_id_fkey 
+FOREIGN KEY (artist_id) REFERENCES artists(id);
+
+-- Task 8.1
+DROP TABLE listening_history;
+DROP TABLE users;
+DROP TABLE songs;
+DROP TABLE albums;
+DROP TABLE artists;
+-- with this order because we will get an error because any of this tables has reference on another
+-- we must delete first table that hasn't referenced by another tables
+
+-- Task 8.2
+
+DROP DATABASE music_library;

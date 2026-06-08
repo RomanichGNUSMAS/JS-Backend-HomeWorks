@@ -7,7 +7,7 @@ exports.AuthService = class {
     static async registerUser(rawData) {
         const { email,password } = rawData;
 
-        const found = await prisma.user.findFirst({
+        const found = await prisma.user.findUnique({
             where : {
                 email:email
             },
@@ -23,7 +23,7 @@ exports.AuthService = class {
     static async logInUser(rawData) {
         const { email,password } = rawData;
 
-        const foundUser = await prisma.user.findFirst({
+        const foundUser = await prisma.user.findUnique({
             select: {
                 password:true,
                 email:true
@@ -36,7 +36,13 @@ exports.AuthService = class {
         if(!foundUser) throw new RequestError("user not found",404);
         const comparedPassword = await comparePassword(password,foundUser.password);
 
-        if(!comparePassword) throw new RequestError("invalid password",401);
+        if(!comparedPassword) throw new RequestError("invalid password",401);
         return AuthRepository.logIntoUser(rawData)
+    }
+
+    static async verifyToken(token) {
+        const compareResult = await AuthRepository.JWTValidate(token);
+        if(!compareResult) throw new RequestError('invalid token or expired',403);
+        return true;
     }
 }

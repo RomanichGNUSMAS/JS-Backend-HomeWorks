@@ -1,6 +1,6 @@
 const { prisma } = require("../configs/db");
 const { hashPassword } = require("../utils/hashing");
-const { createNew } = require("../utils/jwt");
+const { createNew, verify } = require("../utils/jwt");
 
 exports.AuthRepository = class  {
     static async createUser(rawData) {
@@ -16,6 +16,10 @@ exports.AuthRepository = class  {
     static async logIntoUser(rawData) {
         const { email,password } = rawData;
         return createNew(email);
+    }
+
+    static async JWTValidate(token) {
+        return await verify(token);
     }
 }
 

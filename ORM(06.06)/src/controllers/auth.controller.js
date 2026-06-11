@@ -3,7 +3,7 @@ const { registerValidator, loginValidator } = require("../validators/auth.valida
 
 exports.AuthController = class {
     static async register(req,res,next) {
-        try {
+        try {2
             console.log('asdad')
             const data = req.body;
             const shape = registerValidator.shape.parse({ ...data });

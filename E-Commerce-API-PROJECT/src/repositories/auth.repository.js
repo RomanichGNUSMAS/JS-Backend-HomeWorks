@@ -1,4 +1,5 @@
 const { prisma } = require("../configs/db");
+const { cleanRegister } = require("../utils/clearObject");
 const { hashPassword, comparePassword } = require("../utils/hash");
 const { createKey, verifyKey } = require("../utils/jwt");
 
@@ -10,7 +11,8 @@ exports.AuthRepository = class {
         })
         if(found) return null;
         const hashedPassword = await hashPassword(password);
-        const newUser = await prisma.user.create({ data: rawData });
+        const clearObj = cleanRegister(rawData)
+        const newUser = await prisma.user.create({ data: {...clearObj,password:hashedPassword} });
         return newUser;
     }
 
@@ -20,6 +22,7 @@ exports.AuthRepository = class {
             where : { email:email }
         })
         if(!found) return 404;
+        
         const compare = await comparePassword(password,found.password);
         if(!compare) return 401;
         return createKey(email);

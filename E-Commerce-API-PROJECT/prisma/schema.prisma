@@ -24,102 +24,118 @@ enum OrderStatus {
   delivered
   cancelled
 }
+
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  password String
-  name String
-  role Role @default(customer)
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(customer)
   createdAt DateTime @default(now()) @map("created_at")
 
-  orders Order[]
+  cart    Cart?
+  orders  Order[]
   reviews Review[]
+
   @@map("users")
 }
 
 model Category {
-  id Int @id @default(autoincrement())
-  name String @unique
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
   description String?
-  
+
   products ProductCategory[]
+
   @@map("categories")
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-  name String
-  description Float
-  stock Int @default(0)
-  creadetAt DateTime @default(now()) @map("created_at")
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  stock       Int      @default(0)
+  creadetAt   DateTime @default(now()) @map("created_at")
 
+  cartItems  CartItem[]
   categories ProductCategory[]
   orderItems OrderItem[]
-  reviews Review[]
+  reviews    Review[]
+
   @@map("products")
 }
 
 model ProductCategory {
-  productId Int @map("product_id")
+  productId  Int @map("product_id")
   categoryId Int @map("category_id")
-  
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  @@id([productId,categoryId])
+  @@id([productId, categoryId])
+  @@map("product_categories")
 }
 
 model Cart {
-  id Int @id @default(autoincrement())
-  userId Int @map("user_id")
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
 
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   items CartItem[]
+
   @@map("carts")
 }
 
 model CartItem {
-  id Int @id @default(autoincrement())
-  cartId Int @map("cart_id")
+  id        Int      @id @default(autoincrement())
+  cartId    Int      @map("cart_id")
+  productId Int      @map("product_id")
   createdAt DateTime @default(now()) @map("created_at")
+  quantity  Int
 
-  cart Cart @relation(fields: [cartId], references: [id],onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
   @@map("cart_items")
 }
 
 model Order {
-  id Int @id @default(autoincrement())
-  userId Int @map("user_id")
-  status OrderStatus @default(pending)
-  total Float
-  createdAt DateTime @default(now()) @map("created_at")
+  id        Int         @id @default(autoincrement())
+  userId    Int         @map("user_id")
+  status    OrderStatus @default(pending)
+  total     Float
+  createdAt DateTime    @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id])
+  user       User        @relation(fields: [userId], references: [id])
   orderItems OrderItem[]
+
   @@map("orders")
 }
 
 model OrderItem {
-  id Int @id @default(autoincrement())
-  orderId Int @map("order_id")
-  productId Int @map("product_id")
-  quantity Int
+  id              Int   @id @default(autoincrement())
+  orderId         Int   @map("order_id")
+  productId       Int   @map("product_id")
+  quantity        Int
   priceAtPurchase Float
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [id])
+
   @@map("order_items")
 }
 
 model Review {
-  id Int @id @default(autoincrement())
-  userId Int @map("user_id")
-  productId Int @map("product_id")
-  rating Int
-  comment String?
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  productId Int      @map("product_id")
+  rating    Int
+  comment   String?
   createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   @@map("reviews")
 }

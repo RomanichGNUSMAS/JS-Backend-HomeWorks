@@ -11,13 +11,16 @@ exports.CartService = class {
         const result = await CartRepository.addProductToCart(rawData,token);
         switch(result) {
             case 40400 : {
-                throw new Error('Product not found')
+                throw new Error('invalid token')
             }
 
             case 40401 : {
                 throw new Error('user not found');
             }
 
+            case 40402 : {
+                throw new Error('product not found');
+            }
             case 400 : {
                 throw new Error('to much quantity for that product')
             }

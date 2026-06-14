@@ -36,24 +36,25 @@ exports.AuthMiddleware = class {
 
     static async isAdmin(req, res, next) {
         try {
-            const result = await prisma.user.findMany({
-                where : { role:"admin" }
+            const headers = req.headers.authorization;
+            if (!headers?.trim() || !headers.startsWith('Bearer ')) return next(new Error('invalid token'));
+            const token = headers.split(' ')[1];
+            const jwt = verifyKey(token);
+            if (!jwt) return next(new Error('wrong token'));
+            const user = await prisma.user.findUnique({
+                where: { email: jwt.email }
             })
-            const bearer = req.headers.authorization;
-
-            if(!bearer?.trim() || !bearer.startsWith('Bearer ')) next(new Error("you haven't permission to work with this action"));
-            const token = bearer.split(' ')[1];
-            let flag = false;
-            for(const user of result) {
-                if(verifyKey(user.email,token))  {
-                    flag = true;
-                    break;
-                }
-            }
-            if(!flag) {
-                next(new Error("you haven't permission to work with this action"))
-            }
+            if (!user || user.role != 'admin') return next(new Error('you habe not permission doing this operation'))
             next()
         } catch (err) { next(err) }
+    }
+
+    static checkToken(req, res, next) {
+        const headers = req.headers.authorization;
+        if (!headers?.trim() || !headers.startsWith('Bearer ')) return next(new Error('invalid token'));
+        const token = headers.split(' ')[1];
+        const jwt = verifyKey(token);
+        if (!jwt) return next(new Error('wrong token'));
+        next()
     }
 }

@@ -28,12 +28,12 @@ exports.AuthRepository = class {
         return createKey(email);
     }
 
-    static async getMe(email,token) {
+    static async getMe(token) {
         const user = await prisma.user.findUnique({
             where: { email }
         })
         if(!user) return 404;
-        const jwt = verifyKey(email,token);
+        const jwt = verifyKey(token);
         if(!jwt) return 403;
         return user;
     }

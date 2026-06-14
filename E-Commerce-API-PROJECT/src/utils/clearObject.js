@@ -1,11 +1,11 @@
 exports.cleanProduct = (rawData) => {
     const clearObj = {};
-    ['createdAt', 'name', 'description', 'stock'].forEach(t => {
+    ['createdAt', 'name', 'description', 'stock', 'price'].forEach(t => {
         if (rawData[t] !== undefined) {
             clearObj[t] = rawData[t];
         }
     })
-    return clearObj
+    return clearObj;
 }
 
 exports.cleanRegister = (rawData) => {
@@ -15,15 +15,25 @@ exports.cleanRegister = (rawData) => {
             clearObj[t] = rawData[t];
         }
     })
-    return clearObj
+    return clearObj;
 }
 
 exports.cleanCategory = (rawData) => {
     const clearObj = {};
-    ['name','description'].forEach(t => {
+    ['name', 'description'].forEach(t => {
+        if (rawData[t] !== undefined) {
+            clearObj[t] = rawData[t]
+        }
+    })
+    return clearObj;
+}
+
+exports.cleanReview = (rawData) => {
+    const clearObj = {};
+    ['rating', 'userId', 'productId', 'comment'].forEach(t => {
         if(rawData[t] !== undefined) {
             clearObj[t] = rawData[t]
         }
     })
-    return clearObj
+    return clearObj;
 }
